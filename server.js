@@ -8,7 +8,6 @@ const history = require('connect-history-api-fallback');
 const mongoose = require('mongoose');
 const passport = require('passport');
 
-const index = require('./routes/index');
 const user = require('./routes/users');
 const poll = require('./routes/polls');
 
@@ -56,7 +55,6 @@ app.use(passport.session());
 // app routes
 app.use('/api/user', user);
 app.use('/api', poll);
-app.use('/', index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
