@@ -10,7 +10,7 @@
         <p>What would you like to do today?</p>
       </div>
       <router-link to="/signup" v-show="!isLogin"><button id="btnSignup" class="btn btn-primary">Signup</button></router-link>
-      <router-link to="/" v-show="isLogin"><button class="btn btn-success">New Poll</button></router-link>
+      <router-link to="/new" v-show="isLogin"><button class="btn btn-success">New Poll</button></router-link>
       <router-link to="/mypolls" v-show="isLogin"><button class="btn btn-info">My Polls</button></router-link>
     </div>
   </div>

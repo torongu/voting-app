@@ -19,7 +19,7 @@ router.post('/poll', isAuthenticated, pollController.add, respond);
 router.put('/poll/:poll_id', isAuthenticated, pollController.update, respond);
 
 // vote a poll
-router.put("/poll/:poll_id/vote/:answer_id", isAuthenticated, pollController.vote, respond);
+router.put("/poll/:poll_id/vote/:answer_id", pollController.vote, respond);
 
 // delete a poll
 router.delete('/poll/:poll_id', isAuthenticated, pollController.delete, respond);

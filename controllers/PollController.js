@@ -4,35 +4,34 @@ module.exports = {
     getAll: function(req, res, next) {
         let userId = req.user._id;
 
-        Poll.find({ user_id: userId }).exec()
-            .then(function(poll) {
-                req.results = poll;
-                next();
-            })
-            .catch(function(err) {
-                next(err);
-            });
+        Poll.find({ user_id: {_id: userId} })
+          .populate("user_id")
+          .then(function(poll) {
+              req.results = poll;
+              next();
+          })
+          .catch(function(err) {
+              next(err);
+          });
     },
 
     load: function(req, res, next) {
         let id = req.params.poll_id;
 
-        Poll.findById(id)
+        Poll.findOne({_id: id})
           .populate('user_id')
-          .then(function(err, poll) {
-            if (err) {
-              next(err);
-            }
-
+          .then(function(poll) {
             if (!poll) {
               req.success = false;
               req.results = {};
-              next();
+              return next();
             }
 
+            req.success = true;
             req.results = poll;
-            next();
+            return next();
           })
+          .catch(err => next(err));
     },
 
     add: function(req, res, next) {
@@ -42,20 +41,28 @@ module.exports = {
         poll.answers = req.body.answers;
 
         if (!poll.question || !poll.answers) {
-            req.success = false;
-            req.message = "All fields is required."
-            next();
+          req.success = false;
+          req.message = "Missing credentials."
+          return next();
+        } else {
+          poll.answers.forEach(function(item) {
+            if (!item.answer) {
+              req.success = false;
+              req.message = "Missing credentials."
+              return next();
+            }
+          })
         }
 
         let newPoll = new Poll(poll);
         newPoll.save().then(function(poll) {
-            req.success = true;
-            req.message = "Created a poll.";
-            req.results = poll;
-            next();
+          req.success = true;
+          req.message = "Created a poll.";
+          req.results = poll;
+          return next();
         })
         .catch(function(err) {
-            next(err);
+          return next(err);
         });
     },
 
@@ -90,28 +97,27 @@ module.exports = {
     },
 
     vote: function(req, res, next) {
-        let pollId = req.params.poll_id;
-		let answerId = req.params.answer_id;
-		let vote = req.params.vote;
+      let pollId = req.params.poll_id;
+  		let answerId = req.params.answer_id;
 
-		Poll.findOne({_id: pollId})
-        .exec()
+  		Poll.findOne({_id: pollId})
         .then(function(poll) {
-            for (let i = 0; i < poll.answers.length; i++) {
-                if (poll.answers[i]._id == answerId) {
-                    poll.answers[i].vote += 1;
-                }
+          for (let i = 0; i < poll.answers.length; i++) {
+            if (poll.answers[i]._id == answerId) {
+              poll.answers[i].vote += 1;
             }
+          }
 
-            poll.save().then(function(result) {
-                req.success = true;
-                req.results = result;
-                next();
+          poll.save()
+            .then(function(result) {
+              req.success = true;
+              req.results = result;
+              return next();
             }).catch(function(err) {
-                next(err);
+              return next(err);
             })
         }).catch(function(err) {
-            next(err);
+          return next(err);
         })
     },
 
@@ -120,33 +126,32 @@ module.exports = {
         let user = req.user;
 
         Poll.findOne({_id: id})
-        .exec()
+        .populate("user_id")
         .then(function(poll) {
             if (!poll) {
-                    req.success = false;
-                    req.message = "Poll does not exist.";
-                    next();
+              req.success = false;
+              req.message = "Poll does not exist.";
+              return next();
             } else {
+                if (user._id.equals(poll.user_id._id)) {
+                  Poll.remove({_id: id}, function(err, poll) {
+                    if (err) {
+                      return next(err);
+                    }
 
-                if (user._id == poll.user_id) {
-                    Poll.remove({_id: id}, function(err, poll) {
-                        if (err) {
-                            next(err);
-                        }
-
-                        req.success = true;
-                        req.message = "Deleted poll.";
-                        req.results = poll;
-                        next();
-                    });
+                    req.success = true;
+                    req.message = "Deleted poll.";
+                    req.results = poll;
+                    return next();
+                  });
                 } else {
-                    req.success = false;
-                    req.message = "You can not delete this poll.";
-                    next();
+                  req.success = false;
+                  req.message = "You do not have permisson to delete this poll.";
+                  return next();
                 }
             }
         }).catch(function(err) {
-            next(err);
+          return next(err);
         })
     }
 

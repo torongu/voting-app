@@ -109,6 +109,7 @@ export default {
     color: rgba(0, 0, 0, 0);
   }
 }
+
 #btnLogin {
   background: #5cb85c;
   border-color: #4cae4c;

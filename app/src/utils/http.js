@@ -1,27 +1,43 @@
 import axios from 'axios';
 
-export default (function(_) {
-  const token = localStorage.getItem("id_token");
-  const req = _.create({
-    baseURL: 'http://localhost:8000/api',
-    timeout: 300,
-    headers: {
-      Authorization: token
-    }
-  });
+export default {
+  callApi(method, route, data) {
+    let token = localStorage.getItem("id_token");
+    let req = axios.create({
+      baseURL: 'http://localhost:8000/api',
+      timeout: 300,
+      headers: {
+        Authorization: token
+      }
+    })
 
-  return {
-    get: (route) => {
-      return req.get(route);
-    },
-    post: (route, data) => {
-      return req.post(route, data);
-    },
-    put: (route, data) => {
-      return req.put(route, data);
-    },
-    delete: (route, data) => {
-      return req.delete(route, data);
-    },
+    switch (method) {
+      case 'GET':
+        return req.get(route);
+
+      case 'POST':
+        return req.post(route, data);
+
+      case 'PUT':
+        return req.put(route, data);
+
+      case 'DELETE':
+        return req.delete(route, data);
+
+      default:
+        return req.get(route);
+    }
+  },
+  get(route) {
+    return this.callApi('GET', route);
+  },
+  post(route, data) {
+    return this.callApi('POST', route, data);
+  },
+  put(route, data) {
+    return this.callApi('PUT', route, data);
+  },
+  delete(route, data) {
+    return this.callApi('DELETE', route, data);
   }
-})(axios)
+}

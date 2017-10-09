@@ -4,6 +4,9 @@ import Home from '../components/Home/Home'
 import Login from '../components/Login/Login'
 import Signup from '../components/Signup/Signup'
 import MyPoll from '../components/User/MyPoll'
+import ChangePassword from '../components/User/ChangePassword'
+import NewPoll from '../components/Poll/NewPoll'
+import LoadPoll from '../components/Poll/LoadPoll'
 import auth from '../utils/auth'
 
 Vue.use(Router)
@@ -37,6 +40,25 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         auth.isAuthenticated() ? next({to}) : next('/')
       }
+    },
+    {
+      path: '/changepass',
+      component: ChangePassword,
+      beforeEnter: (to, from, next) => {
+        auth.isAuthenticated() ? next({to}) : next('/')
+      }
+    },
+    {
+      path: '/new',
+      component: NewPoll,
+      beforeEnter: (to, from, next) => {
+        auth.isAuthenticated() ? next({to}) : next('/')
+      }
+    },
+    {
+      path: '/poll/:poll_id',
+      component: LoadPoll
     }
-  ]
+  ],
+  mode: 'history'
 })

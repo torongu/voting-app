@@ -19,8 +19,9 @@
           </li>
         </ul>
         <!-- if logged in -->
-        <ul v-else class="nav navbar-nav navbar-right">
+        <ul v-if="isLogin" class="nav navbar-nav navbar-right">
           <li><a style="color: #ffffff;">Hello, {{ user.name.split(' ').shift() }}!</a></li>
+          <li><router-link to="/changepass"><span class="glyphicon glyphicon-cog"></span></router-link></li>
           <li @click="onLogout"><a href="#">Logout</a></li>
         </ul>
       </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="base-template">
     <nav-bar :isLogin="isLogin" :user="user" @logout="handleAuth"></nav-bar>
-    <router-view @login="handleAuth"></router-view>
+    <router-view @login="handleAuth" @logout="handleAuth"></router-view>
   </div>
 </template>
 
