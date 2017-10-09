@@ -5,7 +5,6 @@ export default {
     let token = localStorage.getItem("id_token");
     let req = axios.create({
       baseURL: 'https://truong996-voting-app.herokuapp.com/api',
-      timeout: 300,
       headers: {
         Authorization: token
       }

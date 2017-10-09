@@ -67,7 +67,7 @@ export default {
               }.bind(this), 2000);
             }
           })
-          .catch(err => console.log(err.response));
+          .catch(err => console.log(err));
       }
     },
     checkPass() {
