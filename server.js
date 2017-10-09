@@ -4,6 +4,7 @@ const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
+const history = require('connect-history-api-fallback');
 const mongoose = require('mongoose');
 const passport = require('passport');
 
@@ -25,6 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(history());
 app.use(expressValidator({
 	errorFormatter: function(param, msg, value) {
 		var namespace = param.split('.')
