@@ -51,6 +51,10 @@ export default {
   margin: 0;
 }
 
+.navbar a {
+  cursor: pointer;
+}
+
 .navbar-brand {
   cursor: default;
 }
