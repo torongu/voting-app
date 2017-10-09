@@ -52,9 +52,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // app routes
-app.use('/', index);
 app.use('/api/user', user);
 app.use('/api', poll);
+app.use('/', index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
