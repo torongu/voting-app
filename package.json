@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "NODE_ENV=development node ./bin/www",
     "dev": "webpack-dev-server --inline --hot",
     "build": "webpack -p"
   },
