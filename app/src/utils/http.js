@@ -4,7 +4,7 @@ export default {
   callApi(method, route, data) {
     let token = localStorage.getItem("id_token");
     let req = axios.create({
-      baseURL: 'http://localhost:8000/api',
+      baseURL: 'https://truong996-voting-app.herokuapp.com/api',
       timeout: 300,
       headers: {
         Authorization: token
