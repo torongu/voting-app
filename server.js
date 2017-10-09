@@ -27,6 +27,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(history({ disableDotRule: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressValidator({
 	errorFormatter: function(param, msg, value) {
 		var namespace = param.split('.')
